@@ -6,17 +6,36 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class LoginController {
-    private final LoginPasswordConfirmation loginPasswordConfirmation;
 
-    public LoginController(LoginPasswordConfirmation loginPasswordConfirmation) {
-        this.loginPasswordConfirmation = loginPasswordConfirmation;
-    }
-    String login = "&^%$$$";
-    String password = "qwerty1234";
-    String confirmPassword = "qwerty1234";
+
     @GetMapping(path = "/login")
     public String login(@RequestParam("login") String login, @RequestParam("password") String password, @RequestParam("confirmPassword") String confirmPassword) {
-        loginPasswordConfirmation.confirmLoginPassword(login, password, confirmPassword);
+        confirmLoginPassword(login, password, confirmPassword);
         return login + ' ' + password + ' ' + confirmPassword;
+    }
+
+    public static void confirmLoginPassword(String login, String password, String confirmPassword) {
+
+    }
+
+    public static boolean confirmAllowedChars(String string) {
+        boolean confirmed = true;
+        if (string.toCharArray().length <= 20) {
+            String allowedChars = "abcdefghijklmnopqrstuvwxyz0123456789_";
+            for (char a : string.toLowerCase().toCharArray()) {
+                if (confirmed) {
+                    for (char b : allowedChars.toCharArray()) {
+                        if (a == b) {
+                            confirmed = true;
+                            break;
+                        }
+                        confirmed = false;
+                    }
+                }
+            }
+        } else {
+            confirmed = false;
+        }
+        return confirmed;
     }
 }
