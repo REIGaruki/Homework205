@@ -15,7 +15,15 @@ public class LoginController {
     }
 
     public static void confirmLoginPassword(String login, String password, String confirmPassword) {
-
+        if (!confirmAllowedChars(login)) {
+            throw new WrongLoginException("Login is too long or contains unallowed symbols");
+        }
+        if (!confirmAllowedChars(password)) {
+            throw new WrongPasswordException("Password is too long or contains unallowed symbols");
+        }
+        if (!password.equals(confirmPassword)) {
+            throw new WrongPasswordException("Password is not confirmed");
+        }
     }
 
     public static boolean confirmAllowedChars(String string) {
